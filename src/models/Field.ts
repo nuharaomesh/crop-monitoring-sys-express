@@ -4,6 +4,6 @@ export default class Field {
     fieldAddress!: string
     fieldLocation!: string
     fieldSize!: number
-    fieldImg!: Buffer
+    img!: string
     fieldNowCultivated!: boolean
 }

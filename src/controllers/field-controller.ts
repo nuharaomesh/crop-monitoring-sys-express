@@ -26,7 +26,7 @@ const fetchField = async (req: Request, res: Response) => {
 
 const postField = async (req: Request, res: Response) => {
     const field: Field = req.body
-    field.fieldImg = extractImg(req)
+    field.img = extractImg(req)
     try {
         const savedField = await saveField(field)
         res.status(200).json(savedField)
@@ -39,7 +39,7 @@ const postField = async (req: Request, res: Response) => {
 const putField = async (req: Request, res: Response) => {
     const id = req.params.id
     const field: Field = req.body
-    field.fieldImg = extractImg(req)
+    field.img = extractImg(req)
     try {
         const updatedField = await updateField(id, field)
         res.status(200).json(updatedField)

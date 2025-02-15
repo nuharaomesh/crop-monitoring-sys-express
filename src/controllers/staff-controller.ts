@@ -25,8 +25,9 @@ const fetchStaff = async (req: Request, res: Response) => {
 }
 
 const postStaff = async (req: Request, res: Response) => {
-    const staff: Staff = req.body
-    staff.staffImg = extractImg(req)
+    const staff: Staff = req.body 
+    staff.img = extractImg(req)
+    staff.phone = Number(staff.phone)
     try {
         const savedStaff = await saveStaff(staff)
         res.status(200).json(savedStaff)
@@ -39,7 +40,7 @@ const postStaff = async (req: Request, res: Response) => {
 const putStaff = async (req: Request, res: Response) => {
     const id = req.params.id
     const staff: Staff = req.body
-    staff.staffImg = extractImg(req)
+    staff.img = extractImg(req)
     try {
         const updatedStaff = await updateStaff(id, staff)
         res.status(200).json(updatedStaff)

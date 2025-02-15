@@ -26,7 +26,7 @@ const fetchLog = async (req: Request, res: Response) => {
 
 const postLog = async (req: Request, res: Response) => {
     const log: Logs = req.body
-    log.observedImg = extractImg(req)
+    log.img = extractImg(req)
     try {
         const savedLog = await saveLog(log)
         res.status(200).json(savedLog)
@@ -39,7 +39,7 @@ const postLog = async (req: Request, res: Response) => {
 const putLog = async (req: Request, res: Response) => {
     const id = req.params.id
     const log: Logs = req.body
-    log.observedImg = extractImg(req)
+    log.img = extractImg(req)
     try {
         const updatedLog = await updateLog(id, log)
         res.status(200).json(updatedLog)

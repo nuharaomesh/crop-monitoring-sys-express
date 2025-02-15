@@ -26,7 +26,7 @@ const fetchCrop = async (req: Request, res: Response) => {
 
 const postCrop = async (req: Request, res: Response) => {
     const crop: Crop = req.body
-    crop.cropImg = extractImg(req)
+    crop.img = extractImg(req)
     try {
         const savedCrop = await saveCrop(crop)
         res.status(200).json(savedCrop)
@@ -39,7 +39,7 @@ const postCrop = async (req: Request, res: Response) => {
 const putCrop = async (req: Request, res: Response) => {
     const id = req.params.id
     const crop: Crop = req.body
-    crop.cropImg = extractImg(req)
+    crop.img = extractImg(req)
     try {
         const updatedCrop = await updateCrop(id, crop)
         res.status(200).json(updatedCrop)

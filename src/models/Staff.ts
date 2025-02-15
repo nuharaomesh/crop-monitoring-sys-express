@@ -7,10 +7,10 @@ export default class Staff {
     email!: string
     role!: string
     address!: string
-    JoinedDate!: string
+    joinedDate!: string
     dob!: string
     designation!: string
     phone!: number
     status!: Availability
-    staffImg!: Buffer
+    img!: string 
 }
