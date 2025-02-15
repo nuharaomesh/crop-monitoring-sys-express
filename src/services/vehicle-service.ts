@@ -10,6 +10,19 @@ const getAllVehicles = async () => {
     }
 }
 
+const getVehicleCount = async () => {
+    try {
+        return prisma.vehicle.groupBy({
+            by: ['category'],
+            _count: {
+                category: true
+            }
+        })
+    } catch (e) {
+        throw new Error('error in get vehicle count: ' + e)
+    }
+}
+
 const getVehicle = async (id: string) => {
     try {
         return prisma.vehicle.findUnique({ where: {vehicleID: id}})
@@ -47,4 +60,4 @@ const deleteVehicle = async (id: string) => {
     }
 }
 
-export { getAllVehicles, getVehicle, saveVehicle, updateVehicle, deleteVehicle }
+export { getAllVehicles, getVehicleCount, getVehicle, saveVehicle, updateVehicle, deleteVehicle }

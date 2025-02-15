@@ -1,5 +1,12 @@
 import {Request, Response} from "express";
-import {deleteVehicle, getAllVehicles, getVehicle, saveVehicle, updateVehicle} from "../services/vehicle-service";
+import {
+    deleteVehicle,
+    getAllVehicles,
+    getVehicle,
+    getVehicleCount,
+    saveVehicle,
+    updateVehicle
+} from "../services/vehicle-service";
 
 const fetchAllVehicles = async (req: Request, res: Response) => {
     try {
@@ -8,6 +15,16 @@ const fetchAllVehicles = async (req: Request, res: Response) => {
     } catch (e) {
         res.status(404).send('Not found!')
         console.log('error in fetch all vehicles: ', e)
+    }
+}
+
+const fetchVehicleCount = async (req: Request, res: Response) => {
+    try {
+        const vehicleCount = await getVehicleCount()
+        res.status(200).json(vehicleCount)
+    } catch (e) {
+        res.status(404).send('Not found!')
+        console.log('error in fetch vehicle count: ', e)
     }
 }
 
@@ -47,6 +64,7 @@ const putVehicle = async (req: Request, res: Response) => {
 
 const removeVehicle = async (req: Request, res: Response) => {
     const id = req.params.id
+    console.log("id is: ", id)
     try {
         const deletedVehicle = await deleteVehicle(id)
         res.status(200).json(deletedVehicle)
@@ -56,4 +74,4 @@ const removeVehicle = async (req: Request, res: Response) => {
     }
 }
 
-export { fetchAllVehicles, fetchVehicle, postVehicle, putVehicle, removeVehicle }
+export { fetchAllVehicles, fetchVehicleCount, fetchVehicle, postVehicle, putVehicle, removeVehicle }
