@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {extractImg} from "../util/app-util";
-import {deleteStaff, getAllStaffs, getStaff, saveStaff, updateStaff} from "../services/staff-service";
+import {deleteStaff, getAllStaffs, getStaff, getStaffCount, saveStaff, updateStaff} from "../services/staff-service";
 import Staff from "../models/Staff";
 
 const fetchAllStaffs = async (req: Request, res: Response) => {
@@ -10,6 +10,15 @@ const fetchAllStaffs = async (req: Request, res: Response) => {
     } catch (e) {
         res.status(404).send('Not found')
         console.log('error in fetch all staffs: ', e)
+    }
+}
+
+const fetchStaffCount = async (req: Request, res: Response) => {
+    try {
+        const staffCount = await getStaffCount()
+        res.status(200).json(staffCount)
+    } catch (e) {
+        console.log('error in fetch staff count: ', e)
     }
 }
 
@@ -41,6 +50,7 @@ const putStaff = async (req: Request, res: Response) => {
     const id = req.params.id
     const staff: Staff = req.body
     staff.img = extractImg(req)
+    staff.phone = Number(staff.phone)
     try {
         const updatedStaff = await updateStaff(id, staff)
         res.status(200).json(updatedStaff)
@@ -61,4 +71,4 @@ const removeStaff = async (req: Request, res: Response) => {
     }
 }
 
-export { fetchAllStaffs, fetchStaff, postStaff, putStaff, removeStaff }
+export { fetchAllStaffs, fetchStaffCount, fetchStaff, postStaff, putStaff, removeStaff }

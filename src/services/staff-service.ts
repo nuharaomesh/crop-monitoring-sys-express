@@ -10,6 +10,19 @@ const getAllStaffs = async () => {
     }
 }
 
+const getStaffCount = async () => {
+    try {
+        return prisma.staff.groupBy({
+            by: ['role'],
+            _count: {
+                role: true
+            }
+        })
+    } catch (e) {
+        throw new Error('error in get staff count: ' + e)
+    }
+}
+
 const getStaff = async (staffID: string) => {
     try {
         return prisma.staff.findUnique({
@@ -52,4 +65,4 @@ const deleteStaff = async (staffID: string) => {
     }
 }
 
-export { getAllStaffs, getStaff, saveStaff, updateStaff, deleteStaff }
+export { getAllStaffs, getStaffCount, getStaff, saveStaff, updateStaff, deleteStaff }
