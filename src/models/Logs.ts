@@ -1,6 +1,6 @@
 export default class Logs {
     logCode!: string
-    date!: string
+    date!: Date
     details!: string
     img!: string
 }
