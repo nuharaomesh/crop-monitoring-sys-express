@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import {deleteCultivation, getAllCultivations, getCultivation, saveCultivation, updateCultivation} from "../services/cultivate-service";
 import Cultivate from "../models/Cultivate";
+import {processCultivation} from "../services/cultivate-process-service";
 
 const fetchAllCultivations = async (req: Request, res: Response) => {
     try {
@@ -26,7 +27,7 @@ const fetchCultivation = async (req: Request, res: Response) => {
 const postCultivation = async (req: Request, res: Response) => {
     const cultivation: Cultivate = req.body
     try {
-        const savedCultivation = await saveCultivation(cultivation)
+        const savedCultivation = await processCultivation(cultivation)
         res.status(200).json(savedCultivation)
     } catch (e) {
         res.status(500).send('Internal server error!')

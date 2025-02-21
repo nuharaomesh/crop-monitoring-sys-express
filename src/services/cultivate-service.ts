@@ -20,10 +20,9 @@ const getCultivation = async (cultivateID: string) => {
     }
 }
 
-const saveCultivation = async (cultivate: Cultivate) => {
-    cultivate.cultivateID = generateID('CULTIVATE')
+const saveCultivation = async (tx: any, cultivate: Cultivate) => {
     try {
-        return prisma.cultivate.create({
+        return tx.cultivate.create({
             data: cultivate
         })
     } catch (e) {

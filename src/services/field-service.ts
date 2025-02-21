@@ -21,7 +21,7 @@ const getField = async (fieldCode: string) => {
 }
 
 const saveField = async (field: Field) => {
-    field.fieldCode = generateID('CROP')
+    field.fieldCode = generateID('FIELD')
     try {
         return prisma.field.create({
             data: field
@@ -42,6 +42,17 @@ const updateField = async (fieldCode: string, field: Field) => {
     }
 }
 
+const updateFieldCultivation = async (tx: any, fieldCode: string) => {
+    try {
+        return tx.field.update({
+            where: {fieldCode: fieldCode},
+            data: {fieldNowCultivated: true}
+        })
+    } catch (e) {
+        throw new Error('error in update field cultivation: ' + e)
+    }
+}
+
 const deleteField = async (fieldCode: string) => {
     try {
         return prisma.field.delete({
@@ -52,4 +63,4 @@ const deleteField = async (fieldCode: string) => {
     }
 }
 
-export { getAllFields, getField, saveField, updateField, deleteField }
+export { getAllFields, getField, saveField, updateField, updateFieldCultivation, deleteField }
