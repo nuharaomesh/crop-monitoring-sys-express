@@ -6,3 +6,158 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+enum Season {
+  FALL
+  WINTER
+  SPRING
+  SUMMER
+}
+
+enum GrowTime {
+  SHORT_TERM
+  LONG_TERM
+}
+
+enum FuelType {
+  PETROL
+  DECEAL
+}
+
+enum Availability {
+  ACTIVE
+  AVAILABLE
+  NOT_AVAILABLE
+  REPAIR
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model Crop {
+  cropCode           String      @id
+  cropName           String
+  cropScientificName String
+  category           String
+  cropSeason         Season
+  cropGrowthTime     GrowTime
+  img                String      @db.LongText
+  price              Decimal
+  cultivate          Cultivate[]
+  cropLog            CropLog[]
+}
+
+model Field {
+  fieldCode          String      @id
+  fieldName          String
+  fieldAddress       String
+  fieldLocation      String
+  fieldSize          Float
+  img                String      @db.LongText
+  fieldNowCultivated Boolean     @default(false)
+  cultivate          Cultivate[]
+  fieldLog           FieldLog[]
+}
+
+model Cultivate {
+  cultivateID         String                @id
+  crop                Crop                  @relation(fields: [cropCode], references: [cropCode])
+  cropCode            String
+  field               Field                 @relation(fields: [fieldCode], references: [fieldCode])
+  fieldCode           String
+  cultivateAssignment CultivateAssignment[]
+}
+
+model Staff {
+  staffID             String                @id
+  name                String
+  gender              Gender
+  email               String
+  role                String
+  address             String
+  joinedDate          String
+  dob                 String
+  designation         String
+  phone               Int
+  status              Availability
+  img                 String                @db.LongText
+  cultivateAssignment CultivateAssignment[]
+  staffAssignment     StaffAssignment[]
+  staffLog            StaffLog[]
+}
+
+model Vehicle {
+  vehicleID       String            @id
+  licensePlate    String
+  category        String
+  fuelType        FuelType
+  remarks         String
+  status          Availability
+  staffAssignment StaffAssignment[]
+}
+
+model Log {
+  logCode  String     @id
+  date     DateTime
+  details  String
+  img      String     @db.LongText
+  cropLog  CropLog[]
+  fieldLog FieldLog[]
+  staffLog StaffLog[]
+}
+
+model CultivateAssignment {
+  cultivate   Cultivate @relation(fields: [cultivateID], references: [cultivateID])
+  cultivateID String
+  staff       Staff     @relation(fields: [staffID], references: [staffID])
+  staffID     String
+  startDate   DateTime
+
+  @@id([cultivateID, staffID])
+}
+
+model StaffAssignment {
+  staff      Staff   @relation(fields: [staffID], references: [staffID])
+  staffID    String
+  Vehicle    Vehicle @relation(fields: [vehicleID], references: [vehicleID])
+  vehicleID  String
+  jobRecords String
+
+  @@id([staffID, vehicleID])
+}
+
+model CropLog {
+  crop      Crop     @relation(fields: [cropCode], references: [cropCode])
+  cropCode  String
+  log       Log      @relation(fields: [logCode], references: [logCode])
+  logCode   String
+  date      DateTime @default(now())
+  condition String
+  note      String
+
+  @@id([cropCode, logCode])
+}
+
+model FieldLog {
+  Field              Field    @relation(fields: [fieldCode], references: [fieldCode])
+  fieldCode          String
+  Log                Log      @relation(fields: [logCode], references: [logCode])
+  logCode            String
+  date               DateTime @default(now())
+  observationDetails String
+
+  @@id([fieldCode, logCode])
+}
+
+model StaffLog {
+  Staff           Staff    @relation(fields: [staffID], references: [staffID])
+  staffID         String
+  Log             Log      @relation(fields: [logCode], references: [logCode])
+  logCode         String
+  date            DateTime @default(now())
+  observationRole String
+
+  @@id([staffID, logCode])
+}
