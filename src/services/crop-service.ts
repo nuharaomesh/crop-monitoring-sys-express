@@ -10,6 +10,19 @@ const getAllCrops = async () => {
     }
 }
 
+const getCropCount = async () => {
+    try {
+        return prisma.crop.groupBy({
+            by: ['category'],
+            _count: {
+                category: true
+            }
+        })
+    } catch (e) {
+        throw new Error('error in get crop count: ' + e)
+    }
+}
+
 const getCrop = async (cropCode: string) => {
     try {
         return prisma.crop.findUnique({
@@ -52,4 +65,4 @@ const deleteCrop = async (cropCode: string) => {
     }
 }
 
-export { getAllCrops, getCrop, saveCrop , updateCrop, deleteCrop }
+export { getAllCrops, getCrop, getCropCount, saveCrop , updateCrop, deleteCrop }

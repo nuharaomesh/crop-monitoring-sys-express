@@ -7,5 +7,6 @@ export class Crop {
     category!: string
     cropSeason!: Season
     cropGrowthTime!: GrowTime
+    price!: number
     img!: string
 }

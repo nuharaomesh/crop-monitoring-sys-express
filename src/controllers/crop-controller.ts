@@ -1,6 +1,6 @@
 import { Request, Response} from "express";
 import {Crop} from "../models/Crop";
-import {deleteCrop, getAllCrops, getCrop, saveCrop, updateCrop} from "../services/crop-service";
+import {deleteCrop, getAllCrops, getCrop, getCropCount, saveCrop, updateCrop} from "../services/crop-service";
 import {extractImg} from "../util/app-util";
 
 const fetchAllCrops = async (req: Request, res: Response) => {
@@ -10,6 +10,16 @@ const fetchAllCrops = async (req: Request, res: Response) => {
     } catch (e) {
         res.status(404).send('Not found')
         console.log('error in fetch all crop: ', e)
+    }
+}
+
+const fetchCropCount = async (req: Request, res: Response) => {
+    try {
+        const cropCount = await getCropCount()
+        res.status(200).json(cropCount)
+    } catch (e) {
+        res.status(404).send('Not found')
+        console.log('error in fetch crop count: ', e)
     }
 }
 
@@ -60,4 +70,4 @@ const removeCrop = async (req: Request, res: Response) => {
     }
 }
 
-export { fetchAllCrops, fetchCrop, postCrop, putCrop, removeCrop }
+export { fetchAllCrops, fetchCrop, fetchCropCount, postCrop, putCrop, removeCrop }
