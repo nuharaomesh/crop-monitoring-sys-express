@@ -7,20 +7,28 @@ import staffRoute from "./routes/staff-route";
 import logRoute from "./routes/log-route";
 import cultivateRoute from "./routes/cultivate-route";
 import { Request, Response } from "express";
+import authRoutes from './routes/auth-router'
+import { authenticateToken } from "./controllers/auth-controller";
+import cookieParser from "cookie-parser";
+import cors from 'cors'
 
 const app = express()
 app.use(express.json())
 app.use(fileUpload())
+app.use(cookieParser())
 
-app.use(function(req: Request, res: Response, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-with, Content-Type, Accept, Authorization');
-    next();
-});
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+    credentials: true,
+}));
+
+app.use('/api/auth', authRoutes)
+
+app.use(authenticateToken)
 
 app.use('/api/crop', cropRoute)
-app.use('/api/field', fieldRoute) 
+app.use('/api/field', fieldRoute)
 app.use('/api/staff', staffRoute)
 app.use('/api/log', logRoute) 
 app.use('/api/vehicle', vehicleRoute)
