@@ -36,6 +36,12 @@ enum Gender {
   FEMALE
 }
 
+model User {
+  userID Int @id @default(autoincrement())
+  username String @unique
+  password String
+}
+
 model Crop {
   cropCode           String      @id
   cropName           String
